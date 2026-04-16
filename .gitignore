@@ -1,2 +1,13 @@
+# environment variables
+.env
 .env.*
-./backend/.venv
+
+# python
+backend/.venv/
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+
+# mac
+.DS_Store
