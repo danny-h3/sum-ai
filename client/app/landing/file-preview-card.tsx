@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Card, Text, Group, Badge, ActionIcon} from '@mantine/core';
-import { IconX, IconFileFilled } from '@tabler/icons-react';
+import { IconX } from '@tabler/icons-react';
 
 export function FilePreviewCard(props: {file: File, onRemove: () => void}) {
     const fileName = props.file.name

@@ -6,16 +6,54 @@ import { MenuDropDown } from './menu-with-dropdown';
 import { Dropzone, FileWithPath } from '@mantine/dropzone';
 import { useState } from 'react';
 import { FilePreviewCard } from './file-preview-card';
+import { PostUpload } from '../lib/api';
 
 export function InputWithButton() {
   const theme = useMantineTheme();
 
   const [fileArray, setFileArray] = useState<FileWithPath[]>([]);
+  const [inputText, setInputText] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleInputFieldChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setInputText(e.currentTarget.value)
+  }
+
+  const handleSubmit = async () => {
+    if (isLoading) return; 
+
+    if (!inputText && fileArray.length === 0) {
+      return 
+    }
+
+    setIsLoading(true); 
+    try { 
+      const postStatus = await PostUpload(inputText, fileArray)
+
+      if (postStatus === 200 ) {
+        console.log("Success")
+      }
+      setInputText("")
+      setFileArray([])
+    } catch (err) {
+      console.error("Internal error: ", err)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing) {
+      e.preventDefault()
+      handleSubmit()
+    }
+  } 
 
   return (
     <Dropzone 
       onDrop={(newFiles) => setFileArray( (previousArray) => [...previousArray, ...newFiles])} 
       activateOnClick={false}
+      activateOnKeyboard={false}
     >
       <Paper
         radius="lg"
@@ -39,6 +77,9 @@ export function InputWithButton() {
           maxRows={8}
           placeholder="Summarize something ... "
           classNames={{ wrapper: 'w-full'}}
+          value={inputText}
+          onChange={handleInputFieldChange}
+          onKeyDown={handleKeyDown}
         />
         
         <div className="flex justify-between w-full">
@@ -62,6 +103,8 @@ export function InputWithButton() {
             color={theme.primaryColor}
             variant="filled"
             aria-label="Enter"
+            loading={isLoading}
+            onClick={handleSubmit}
           >
             <IconArrowRight size={18} stroke={1.5} />
           </ActionIcon>
