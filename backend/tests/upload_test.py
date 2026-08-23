@@ -1,6 +1,6 @@
 from fastapi.testclient import TestClient
 from unittest.mock import patch, ANY 
-from main import app
+from backend.app.main import app
 
 client = TestClient(app)
 
@@ -32,7 +32,7 @@ def test_upload_input_only(mock_worker_delay, mock_json_read):
     mock_json_read.assert_called_once_with(ANY)
     mock_worker_delay.assert_called_once_with(
         "Did you know that cats can live up to 20 years?",
-        None,
+        [],
         "\n".join(mock_json_read.return_value["sample_1"])
     )
     assert res.status_code == 200
@@ -53,7 +53,7 @@ def test_upload_file_only(mock_worker_delay,  mock_json_read):
     mock_json_read.assert_called_once_with(ANY)
     mock_worker_delay.assert_called_once_with(
         None,
-        b"hello",
+        [b"hello"],
         "\n".join(mock_json_read.return_value["sample_1"])
     )
     assert res.status_code == 200
@@ -77,7 +77,7 @@ def test_upload_valid_package(mock_worker_delay, mock_json_read):
     mock_json_read.assert_called_once_with(ANY)
     mock_worker_delay.assert_called_once_with(
         "Please summarize the following",
-        b"hello",
+        [b"hello"],
         "\n".join(mock_json_read.return_value["sample_1"])
     )
     assert response.status_code == 200

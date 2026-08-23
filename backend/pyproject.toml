@@ -1,0 +1,34 @@
+[project]
+name = "sum-ai-backend-app"
+version = "0.1.0"
+description = "Backend for sum-ai web application"
+authors = [
+    {name = "Dan H"}
+]
+requires-python = ">=3.12"
+dependencies = [
+    "bcrypt (>=5.0.0,<6.0.0)",
+    "fastapi (>=0.139.0,<0.140.0)",
+    "uvicorn (>=0.50.0,<0.51.0)",
+    "sqlalchemy (>=2.0.51,<3.0.0)",
+    "pydantic-settings (>=2.14.2,<3.0.0)",
+    "python-dotenv (>=1.2.2,<2.0.0)",
+    "pymupdf (>=1.28.0,<2.0.0)",
+    "pytesseract (>=0.3.13,<0.4.0)",
+    "pillow (>=12.3.0,<13.0.0)",
+    "python-multipart (>=0.0.32,<0.0.33)",
+    "httpx (>=0.28.1,<0.29.0)",
+    "minio (>=7.2.20,<8.0.0)",
+    "sentry-sdk (>=2.64.0,<3.0.0)",
+    "pyjwt (>=2.13.0,<3.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[dependency-groups]
+dev = [
+    "pytest (>=9.1.1,<10.0.0)"
+]

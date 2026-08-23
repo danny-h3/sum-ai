@@ -1,13 +1,11 @@
 import redis
-import os
-from dotenv import load_dotenv
-from pathlib import Path
+from secrets import token_urlsafe
+from app.core.config import settings
 
-load_dotenv(Path(__file__).parent.parent / ".env.local")
+r = redis.Redis.from_url(settings.redis_url)
 
-REDIS_URL =  os.getenv("REDIS")
-
-r = redis.Redis.from_url( REDIS_URL )
+def gen_task_id(): 
+    return token_urlsafe(16)
 
 # update redis stream, return True on success, False otherwise
 def xadd_stream(task_id: str, event: str, data: str): 
